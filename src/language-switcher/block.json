@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "smb/language-switcher",
+	"version": "0.1.0",
+	"title": "Language Switcher",
+	"category": "widgets",
+	"icon": "smiley",
+	"description": "A Language Switcher block for Gutenberg",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": true,
+		"alignWide": true
+	},
+	"textdomain": "language-switcher",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}
