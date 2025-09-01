@@ -9,7 +9,6 @@
  *
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
-$languages = [];
 if (!function_exists('pll_the_languages')) {
     echo '<p class="polylang-error">Polylang plugin is niet actief</p>';
 } else {
@@ -17,27 +16,41 @@ if (!function_exists('pll_the_languages')) {
     $translations = array_filter($languages, function($item) {
         return !$item["no_translation"];
     });
+    
     $count = count($translations);
-    if (empty($translations) || $count == 1) {
+    $component_classes = "wp-block-smb-language-switcher";
+    if($attributes["direction"] ?? "horizontal" == "vertical") {
+        $component_classes .= " wp-block-smb-language-switcher--vertical";
+    } else {
+        $component_classes .= " wp-block-smb-language-switcher--horizontal";
+    }
+    if ( $count <= 1) {
         echo "";
     } else {
         ob_start();
         ?>
-        <div class="wp-block-smb-language-switcher">
+        <div <?php echo get_block_wrapper_attributes(array("class" => $component_classes)); ?>>
             <ul class="wp-block-smb-language-switcher__languages">
                 <?php foreach ($translations as $language): ?>
                     <?php
-                    $classes = 'wp-block-smb-language-switcher__language';
+                    $list_item_classes = 'wp-block-smb-language-switcher__language';
                     if ($language["current_lang"]) {
-                        $classes .= ' wp-block-smb-language-switcher__language--selected';
+                        $list_item_classes .= ' wp-block-smb-language-switcher__language--selected';
                     }
                     ?>
-                    <li class="<?php echo esc_attr($classes); ?>">
+                    <li class="<?php echo esc_attr($list_item_classes); ?>">
                         <a href="<?php echo esc_attr($language["url"]); ?>">
-                            <img class="wp-block-smb-language-switcher__language__flag" src="<?php echo esc_attr($language["flag"]); ?>"
-                            <p class="wp-block-smb-language-switcher__language__label">
-                                <?php echo esc_html($language["name"]); ?>
-                            </p>
+                            
+                            
+                            <?php if(($attributes["display"] ?? "both") != "names"): ?>
+                                <img class="wp-block-smb-language-switcher__language__flag" src="<?php echo esc_attr($language["flag"]); ?>"
+                            <?php endif; ?>
+                            
+                            <?php if(($attributes["display"] ?? "both") != "flags"): ?>
+                                <p class="wp-block-smb-language-switcher__language__label">
+                                    <?php echo esc_html($language["name"]); ?>
+                                </p>
+                            <?php endif; ?>
                         </a>
                     </li>
                 <?php endforeach; ?>

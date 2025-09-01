@@ -13,6 +13,16 @@
 		"align": true,
 		"alignWide": true
 	},
+	"attributes": {
+		"direction": {
+			"type": "string",
+			"enum": ["horizontal", "vertical"]
+		},
+		"display": {
+			"type": "string",
+			"enum": ["flags", "names", "both"]
+		}
+	},
 	"textdomain": "language-switcher",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
