@@ -3,7 +3,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
  */
-import { __ } from '@wordpress/i18n';
+import { __ } from "@wordpress/i18n";
 
 /**
  * React hook that is used to mark the block wrapper element.
@@ -11,8 +11,13 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
+import {
+	PanelBody,
+	SelectControl,
+	Notice,
+	RadioControl,
+} from "@wordpress/components";
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -20,10 +25,16 @@ import { PanelBody, SelectControl } from '@wordpress/components';
  *
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
-import './editor.scss';
+import "./editor.scss";
 
 const language_switcher_data = window.SMBLanguageSwitcherData || {};
-const languages_list = Object.entries(language_switcher_data.languages).sort((a, b) => a.order - b.order);
+const error =
+	"error" in language_switcher_data ? language_switcher_data.error : false;
+const languages_list = error
+	? []
+	: Object.entries(language_switcher_data.languages).sort(
+			(a, b) => a.order - b.order,
+	  );
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -32,66 +43,141 @@ const languages_list = Object.entries(language_switcher_data.languages).sort((a,
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
  * @return {Element} Element to render.
-*/
-export default function Edit({attributes, setAttributes}) {
-	const language_list_items = languages_list.map((language) => {
-		let language_code, language_obj;
-		[language_code, language_obj] = language
-		return ( 
-			<li className='wp-block-smb-language-switcher__language' key={language_obj.id}>
-				<a>
-					{ attributes.display != "names" ? (
-						<img className="wp-block-smb-language-switcher__language__flag" src={language_obj.flag}></img>
-						) : ("")
-					}
-					
-					{ attributes.display != "flags" ? (
-						<p className='wp-block-smb-language-switcher__language__label'>
-							{language_obj.name}
-						</p>
-						) : ("")
-					}
-				</a>
-			</li>
-	)});
-	
-	let classes = 'wp-block-smb-language-switcher';
+ */
+export default function Edit({ attributes, setAttributes }) {
+	let error_msg;
+	switch (error) {
+		case "polylang-inactive":
+			error_msg = __(
+				"This block requires plugin 'Polylang' to be installed and activated.",
+				"smb-language-switcher",
+			);
+			break;
+		default:
+			error_msg = __("Unknown error occured.", "smb-language-switcher");
+	}
+
+	const language_list_items = error ? (
+		<span>{error_msg}</span>
+	) : (
+		languages_list.map((language) => {
+			let language_obj;
+			[_, language_obj] = language;
+			return (
+				<li
+					className="wp-block-smb-language-switcher__language"
+					key={language_obj.id}
+				>
+					<a className="wp-block-smb-language-switcher__language__anchor">
+						{attributes.display != "names" ? (
+							<img
+								className="wp-block-smb-language-switcher__language__flag"
+								src={language_obj.flag}
+							></img>
+						) : (
+							""
+						)}
+
+						{attributes.display != "flags" ? (
+							<p className="wp-block-smb-language-switcher__language__label">
+								{language_obj.name}
+							</p>
+						) : (
+							""
+						)}
+					</a>
+				</li>
+			);
+		})
+	);
+
+	let classes = "wp-block-smb-language-switcher";
 	switch (attributes.direction) {
 		case "vertical":
-			classes += ' wp-block-smb-language-switcher--vertical';
+			classes += " wp-block-smb-language-switcher--vertical";
 			break;
-		
+
 		case "horizontal":
 		default:
-			classes += ' wp-block-smb-language-switcher--horizontal';
+			classes += " wp-block-smb-language-switcher--horizontal";
 	}
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Settings', 'smb-language-switcher')}>
+				{error ? (
+					<Notice
+						status="error"
+						politeness="polite"
+						actions={[
+							{
+								label: "Open Polylang plugin page",
+								onClick: () => {
+									tb_show(
+										"Polylang Plugin",
+										language_switcher_data.install_link,
+									);
+								}
+							}
+						]}
+					>
+						{error_msg}
+					</Notice>
+				) : (
+					""
+				)}
+				<PanelBody title={__("Settings", "smb-language-switcher")}>
 					<SelectControl
-						label={__('Direction', 'smb-language-switcher')}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						disabled={error}
+						label={__("Direction", "smb-language-switcher")}
 						value={attributes.direction}
 						options={[
-							{label: 'Horizontal', value: 'horizontal'},
-							{label: 'Vertical', value: 'vertical'}
+							{
+								label: __(
+									"Horizontal",
+									"smb-language-switcher",
+								),
+								value: "horizontal",
+							},
+							{
+								label: __("Vertical", "smb-language-switcher"),
+								value: "vertical",
+							},
 						]}
-						onChange={(value) => {setAttributes({direction: value})}}
+						onChange={(value) => {
+							setAttributes({ direction: value });
+						}}
 					/>
-					<SelectControl
-						label={__('Display', 'smb-language-switcher')}
-						value={attributes.display}
+					<RadioControl
+						disabled={error}
+						label={__("Display", "smb-language-switcher")}
+						selected={attributes.display ?? "both"}
 						options={[
-							{label: 'Flags', value: 'flags'},
-							{label: 'Names', value: 'names'},
-							{label: 'Both', value: 'both'}
+							{
+								label: __("Both", "smb-language-switcher"),
+								value: "both",
+							},
+							{
+								label: __("Flags", "smb-language-switcher"),
+								value: "flags",
+							},
+							{
+								label: __("Names", "smb-language-switcher"),
+								value: "names",
+							},
 						]}
-						onChange={(value) => {setAttributes({display: value})}}
+						onChange={(value) => {
+							setAttributes({ display: value });
+						}}
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...useBlockProps({className: classes}) }>
-				<ul className='wp-block-smb-language-switcher__languages' role='list'>
+			<div {...useBlockProps({ className: classes })}>
+				<ul
+					className="wp-block-smb-language-switcher__languages"
+					role="list"
+				>
 					{language_list_items}
 				</ul>
 			</div>

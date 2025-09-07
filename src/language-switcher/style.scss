@@ -1,13 +1,11 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
+main::after {
+  content: "";
+  display: block;
+  clear: both;
+}
 
 .wp-block-smb-language-switcher {
 	$base: &;
-	padding: 2px;
 	
 	&__languages {
 		background-color: var(--wp--preset--color--base-2);
@@ -15,12 +13,13 @@
 		list-style-type: none;
 		padding: var(--wp--preset--spacing--20);
 		gap: var(--wp--preset--spacing--20);
+		justify-content: space-evenly;
 	}
 	
 	&__language {
 		list-style: none;
 		
-		a {
+		&__anchor {
 			cursor: pointer;
 			font-family: var(--wp--preset--font-family--body);
 			font-size: var(--wp--preset--font-size--small);
@@ -29,20 +28,20 @@
 			align-items: center;
 			justify-content: flex-start;
 			gap: var(--wp--preset--spacing--20);
+		}
 			
-			#{$base}__language__flag {
-				flex-basis: content;
-			}
-			
-			#{$base}__language__label {
-				flex-basis: content;
-			}
+		&__flag {
+			flex-basis: content;
+		}
+		
+		&__label {
+			flex-basis: content;
 		}
 		
 		&--selected {
 			background-color: var(--wp--preset--color--base);
 			
-			a {
+			.wp-block-smb-language-switcher__language__anchor {
 				text-decoration: none;
 				cursor: none;
 				pointer-events: none;
@@ -53,7 +52,6 @@
 	&--horizontal {
 		#{$base}__languages {
 			flex-direction: row;
-			justify-content: space-evenly;
 		}
 	}
 	
@@ -62,11 +60,5 @@
 			flex-direction: column;
 			justify-content: space-evenly;
 		}
-	}
-	
-	&.alignleft, &.alignRight {
-		position: sticky;
-		inset: var(--wp--preset--spacing--20);
-		z-index: 50;
 	}
 }

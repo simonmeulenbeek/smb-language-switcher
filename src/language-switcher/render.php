@@ -10,7 +10,8 @@
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 if (!function_exists('pll_the_languages')) {
-    echo '<p class="polylang-error">Polylang plugin is niet actief</p>';
+    $error = __('Polylang not active', 'error-polylang-active', 'smb-language-switcher');
+    echo '<p class="polylang-error">' . esc_html($error) . '</p>';
 } else {
     $languages = pll_the_languages(array( 'raw' => 1, 'post_id' => get_the_ID()));
     $translations = array_filter($languages, function($item) {
@@ -39,7 +40,7 @@ if (!function_exists('pll_the_languages')) {
                     }
                     ?>
                     <li class="<?php echo esc_attr($list_item_classes); ?>">
-                        <a href="<?php echo esc_attr($language["url"]); ?>">
+                        <a class="wp-block-smb-language-switcher__language__anchor" href="<?php echo esc_attr($language["url"]); ?>">
                             
                             
                             <?php if(($attributes["display"] ?? "both") != "names"): ?>
@@ -57,6 +58,6 @@ if (!function_exists('pll_the_languages')) {
             </ul>
         </div>
         <?php
-        echo ob_get_clean();   
+        echo ob_get_clean(); 
     }
 }

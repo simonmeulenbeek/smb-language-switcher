@@ -18,11 +18,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 function enqueue_editor_data() {
     if (function_exists('pll_the_languages')) {
-		error_log("ERROR:::::".get_the_ID());
         wp_localize_script('smb-language-switcher-editor-script', 'SMBLanguageSwitcherData', [
             'languages' => pll_the_languages(array('raw' => true, 'post_id' => get_the_ID()))
         ]);
-    }
+    } else {
+		wp_localize_script('smb-language-switcher-editor-script', 'SMBLanguageSwitcherData', array(
+            'languages' => [],
+			'error' => 'polylang-inactive',
+			'install_link' => network_admin_url('plugin-install.php?tab=plugin-information&plugin=' . 'polylang'. '&TB_iframe=true' )
+        ));
+		wp_enqueue_script( 'thickbox' );
+		wp_enqueue_style( 'thickbox' );
+		wp_enqueue_script('plugin-install');
+	}
 }
 add_action('enqueue_block_editor_assets', 'enqueue_editor_data');
 
