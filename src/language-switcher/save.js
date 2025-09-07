@@ -1,5 +1,5 @@
 /**
- * This is save function returns null, because it's entirely rendered server-side, and 
+ * This is save function returns null, because it's entirely rendered server-side, and
  * therefore doesn't need to be persisted in the database.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save
