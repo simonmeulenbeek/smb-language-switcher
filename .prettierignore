@@ -1,0 +1,5 @@
+# ignore editorhistory in .history folder
+.history/
+
+# ignore build
+build/
