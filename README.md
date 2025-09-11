@@ -14,6 +14,11 @@ A modern WordPress Gutenberg block that provides a customizable language switche
 - **🎛️ Editor-Friendly**: Intuitive controls in the Gutenberg editor
 - **♿ Accessibility Ready**: Semantic markup for screen readers
 
+## 📷 Screenshots
+![Screenshot showing horizontal usage with flags and names showing](assets/screenshot-1.png)
+
+![Screenshot showing vertical usage with only flags showing](assets/screenshot-2.png)
+
 ## 📋 Requirements
 
 - WordPress 6.7 or higher
