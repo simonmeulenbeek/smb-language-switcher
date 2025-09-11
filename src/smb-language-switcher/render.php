@@ -20,7 +20,7 @@ if (!function_exists('pll_the_languages')) {
     
     $count = count($translations);
     $component_classes = "wp-block-smb-language-switcher";
-    if($attributes["direction"] ?? "horizontal" == "vertical") {
+    if(($attributes['direction'] ?? "horizontal") == "vertical") {
         $component_classes .= " wp-block-smb-language-switcher--vertical";
     } else {
         $component_classes .= " wp-block-smb-language-switcher--horizontal";

@@ -1,27 +1,25 @@
 <?php
 /**
- * Plugin Name:       Language Switcher
- * Description:       Language Switcher block for use with Polylang
+ * Plugin Name:       SMB Language Switcher
+ * Description:       SMB Language Switcher is a block for the Gutenberg editor that supports Polylang 
  * Version:           0.1.0
  * Requires at least: 6.7
  * Requires PHP:      7.4
- * Author:            The WordPress Contributors
- * License:           GPL-2.0-or-later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       language-switcher
- *
- * @package CreateBlock
+ * Author:            Simon Meulenbeek
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-function enqueue_editor_data() {
+function smb_enqueue_editor_data() {
+	// Check if Polylang is available
     if (function_exists('pll_the_languages')) {
         wp_localize_script('smb-language-switcher-editor-script', 'SMBLanguageSwitcherData', [
             'languages' => pll_the_languages(array('raw' => true, 'post_id' => get_the_ID()))
         ]);
     } else {
+		// If Polylang isn't available, enqueue editor scripts and styles 
+		// so we can use 'thickbox' to display the polylang plugin page in a modal window.
 		wp_localize_script('smb-language-switcher-editor-script', 'SMBLanguageSwitcherData', array(
             'languages' => [],
 			'error' => 'polylang-inactive',
@@ -32,7 +30,7 @@ function enqueue_editor_data() {
 		wp_enqueue_script('plugin-install');
 	}
 }
-add_action('enqueue_block_editor_assets', 'enqueue_editor_data');
+add_action('enqueue_block_editor_assets', 'smb_enqueue_editor_data');
 
 /**
  * Registers the block using a `blocks-manifest.php` file, which improves the performance of block type registration.
@@ -42,7 +40,7 @@ add_action('enqueue_block_editor_assets', 'enqueue_editor_data');
  * @see https://make.wordpress.org/core/2025/03/13/more-efficient-block-type-registration-in-6-8/
  * @see https://make.wordpress.org/core/2024/10/17/new-block-type-registration-apis-to-improve-performance-in-wordpress-6-7/
  */
-function create_block_language_switcher_block_init() {
+function smb_language_switcher_block_init() {
 	/**
 	 * Registers the block(s) metadata from the `blocks-manifest.php` and registers the block type(s)
 	 * based on the registered block metadata.
@@ -74,4 +72,4 @@ function create_block_language_switcher_block_init() {
 		register_block_type( __DIR__ . "/build/{$block_type}" );
 	}
 }
-add_action( 'init', 'create_block_language_switcher_block_init' );
+add_action( 'init', 'smb_language_switcher_block_init' );

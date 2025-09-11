@@ -1,4 +1,4 @@
-=== Language Switcher ===
+=== SMB Language Switcher ===
 Contributors: simonmb
 Tags: gutenberg, block, language, multilingual, polylang
 Requires at least: 6.7

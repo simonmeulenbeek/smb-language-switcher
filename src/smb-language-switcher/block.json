@@ -5,9 +5,7 @@
 	"version": "0.1.0",
 	"title": "Language Switcher",
 	"category": "widgets",
-	"icon": "smiley",
 	"description": "A Language Switcher block for Gutenberg",
-	"example": {},
 	"supports": {
 		"html": false,
 		"align": true,
@@ -16,14 +14,15 @@
 	"attributes": {
 		"direction": {
 			"type": "string",
-			"enum": ["horizontal", "vertical"]
-		},
+			"enum": ["horizontal", "vertical"],
+			"default": "horizontal"
+	},
 		"display": {
 			"type": "string",
-			"enum": ["flags", "names", "both"]
+			"enum": ["flags", "names", "both"],
+			"default": "both"
 		}
 	},
-	"textdomain": "language-switcher",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
