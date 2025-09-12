@@ -5,6 +5,9 @@
 
 A modern WordPress Gutenberg block that provides a customizable language switcher for multilingual websites. Uses the Polylang plugin to offer visitors an intuitive way to switch between available languages.
 
+> [!WARNING]
+> Until version 1.0 this will probably have bugs. If you encounter any please create an Issue.
+
 ## ✨ Features
 
 - **🎨 Flexible Display Options**: Show language flags, names, or both
@@ -27,7 +30,7 @@ A modern WordPress Gutenberg block that provides a customizable language switche
 
 ## 🚀 Installation
 
-1. **Download**: Go to the [Releases page](../../releases) and download the latest `language-switcher.zip` file
+1. **Download**: Go to the [Releases page](../../releases) and download the latest `smb-language-switcher.zip` file
 
 2. **Upload**: In your WordPress admin, go to **Plugins** → **Add New** → **Upload Plugin**
 
@@ -116,6 +119,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 - Built with [WordPress Block API](https://developer.wordpress.org/block-editor/)
 - Integrates with [Polylang](https://wordpress.org/plugins/polylang/) by Chouby
 - Icon from [Iconify](https://iconify.design/)
+- Claude AI for creating this readme.
 
 ## 📞 Support
 
